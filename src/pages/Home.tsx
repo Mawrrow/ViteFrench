@@ -63,7 +63,7 @@ export function Home({ onStart }: HomeProps) {
             <button
               key={n}
               onClick={() => setCount(n)}
-              className={`border-4 border-brand-black px-4 py-2 font-display shadow-brutal-sm transition-colors ${
+              className={`border-4 border-brand-black px-4 py-2 font-display shadow-brutal-sm transition-colors hover:cursor-pointer ${
                 count === n ? "bg-brand-black text-white" : "bg-white"
               }`}
             >
@@ -82,7 +82,7 @@ export function Home({ onStart }: HomeProps) {
             <select
               value={verbTag}
               onChange={(e) => setVerbTag(e.target.value)}
-              className="border-4 border-brand-black bg-white px-4 py-3 font-semibold shadow-brutal-sm"
+              className="border-4 border-brand-black bg-white px-4 py-3 font-semibold shadow-brutal-sm hover:cursor-pointer"
             >
               <option value="">All</option>
               {VERB_TAGS.map((t) => (
@@ -98,7 +98,7 @@ export function Home({ onStart }: HomeProps) {
             <select
               value={tenseTag}
               onChange={(e) => setTenseTag(e.target.value)}
-              className="border-4 border-brand-black bg-white px-4 py-3 font-semibold shadow-brutal-sm"
+              className="border-4 border-brand-black bg-white px-4 py-3 font-semibold shadow-brutal-sm hover:cursor-pointer"
             >
               <option value="">All</option>
               {TENSE_TAGS.map((t) => (

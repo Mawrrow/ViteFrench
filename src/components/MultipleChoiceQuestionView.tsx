@@ -44,7 +44,7 @@ export function MultipleChoiceQuestionView({ question, phase, selectedOption, on
               type="button"
               disabled={phase === "feedback"}
               onClick={() => onSelect(option)}
-              className={`flex items-center gap-3 border-4 border-brand-black px-5 py-4 text-left text-lg font-semibold shadow-brutal-sm transition-colors disabled:cursor-default ${stateClasses}`}
+              className={`flex items-center gap-3 border-4 border-brand-black px-5 py-4 text-left text-lg font-semibold shadow-brutal-sm transition-colors disabled:cursor-default hover:cursor-pointer ${stateClasses}`}
             >
               <span className="flex h-7 w-7 shrink-0 items-center justify-center border-2 border-brand-black font-display text-sm">
                 {i + 1}

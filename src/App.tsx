@@ -25,7 +25,7 @@ export default function App() {
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
           <button
             onClick={() => setView({ name: "home" })}
-            className="font-display text-lg tracking-tight uppercase"
+            className="font-display text-lg tracking-tight uppercase hover:cursor-pointer"
           >
             ViteFrench
           </button>
@@ -70,7 +70,7 @@ function NavButton({ active, onClick, children }: { active: boolean; onClick: ()
   return (
     <button
       onClick={onClick}
-      className={`border-4 border-brand-black px-4 py-2 font-display text-sm uppercase shadow-brutal-sm transition-colors ${
+      className={`border-4 border-brand-black px-4 py-2 font-display text-sm uppercase shadow-brutal-sm transition-colors hover:cursor-pointer ${
         active ? "bg-brand-blue text-white" : "bg-white"
       }`}
     >
