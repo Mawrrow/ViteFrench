@@ -1,16 +1,14 @@
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
 import { TENSE_TAGS, VERB_TAGS, labelForTag } from "../data/tagGroups";
 import { filterQuestions } from "../services/questionService";
 import type { QuizConfig } from "../types/quiz";
 
-interface HomeProps {
-  onStart: (config: QuizConfig) => void;
-}
-
 const ROUND_LENGTHS = [10, 15, 20, 30];
 
-export function Home({ onStart }: HomeProps) {
+export function Home() {
+  const navigate = useNavigate();
   const [count, setCount] = useState(20);
   const [verbTag, setVerbTag] = useState<string>("");
   const [tenseTag, setTenseTag] = useState<string>("");
@@ -18,9 +16,13 @@ export function Home({ onStart }: HomeProps) {
   const targetTags = useMemo(() => [verbTag, tenseTag].filter(Boolean), [verbTag, tenseTag]);
   const matchCount = useMemo(() => filterQuestions({ tags: targetTags }).length, [targetTags]);
 
+  function startQuiz(config: QuizConfig) {
+    navigate("/quiz", { state: config, replace: true });
+  }
+
   function startTargeted() {
     const label = targetTags.length > 0 ? targetTags.map(labelForTag).join(" + ").toUpperCase() : "TARGET PRACTICE";
-    onStart({ label, filter: { tags: targetTags }, count });
+    startQuiz({ label, filter: { tags: targetTags }, count });
   }
 
   return (
@@ -35,21 +37,21 @@ export function Home({ onStart }: HomeProps) {
       </header>
 
       <section className="flex flex-col gap-4">
-        <Button size="lg" className="w-full py-6 text-2xl md:text-3xl" onClick={() => onStart({ label: "QUICK FIRE", filter: {}, count })}>
+        <Button size="lg" className="w-full py-6 text-2xl md:text-3xl" onClick={() => startQuiz({ label: "QUICK FIRE", filter: {}, count })}>
           Quick fire
         </Button>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Button
             variant="secondary"
             className="w-full"
-            onClick={() => onStart({ label: "MULTIPLE CHOICE", filter: { types: ["multiple_choice"] }, count })}
+            onClick={() => startQuiz({ label: "MULTIPLE CHOICE", filter: { types: ["multiple_choice"] }, count })}
           >
             Multiple choice
           </Button>
           <Button
             variant="secondary"
             className="w-full"
-            onClick={() => onStart({ label: "TRANSLATION", filter: { types: ["translation"] }, count })}
+            onClick={() => startQuiz({ label: "TRANSLATION", filter: { types: ["translation"] }, count })}
           >
             Translation
           </Button>

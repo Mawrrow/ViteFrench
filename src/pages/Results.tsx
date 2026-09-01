@@ -1,16 +1,25 @@
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
 import { labelForTag } from "../data/tagGroups";
 import type { AnsweredRecord } from "../hooks/useQuiz";
+import type { QuizConfig } from "../types/quiz";
 
-interface ResultsProps {
+interface ResultsRouteState {
   records: AnsweredRecord[];
-  onPracticeAgain: () => void;
-  onHome: () => void;
+  config: QuizConfig;
 }
 
 const MIN_TAG_SAMPLE = 2;
 
-export function Results({ records, onPracticeAgain, onHome }: ResultsProps) {
+/** Reads its session data off route state (set by Quiz on completion) — nothing to show on a direct visit, so bounce home. */
+export function Results() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const state = location.state as ResultsRouteState | null;
+
+  if (!state) return <Navigate to="/" replace />;
+  const { records, config } = state;
+
   const total = records.length;
   const correct = records.filter((r) => r.correct).length;
   const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
@@ -62,10 +71,15 @@ export function Results({ records, onPracticeAgain, onHome }: ResultsProps) {
       )}
 
       <div className="mt-6 flex w-full flex-col gap-4 sm:flex-row">
-        <Button variant="primary" size="lg" className="flex-1" onClick={onPracticeAgain}>
+        <Button
+          variant="primary"
+          size="lg"
+          className="flex-1"
+          onClick={() => navigate("/quiz", { state: config, replace: true })}
+        >
           Practice again
         </Button>
-        <Button variant="outline" size="lg" className="flex-1" onClick={onHome}>
+        <Button variant="outline" size="lg" className="flex-1" onClick={() => navigate("/", { replace: true })}>
           Home
         </Button>
       </div>
