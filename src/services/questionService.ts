@@ -54,10 +54,23 @@ function shuffle<T>(items: T[]): T[] {
 }
 
 /**
+ * Randomizes display order of a multiple-choice question's options. The seed
+ * data isn't guaranteed to have the answer pre-shuffled, so this runs on every
+ * selection rather than relying on authoring discipline — a new object is
+ * returned rather than mutating the shared, cached question in ALL_QUESTIONS.
+ */
+function withShuffledOptions(question: Question): Question {
+  if (question.type !== "multiple_choice") return question;
+  return { ...question, options: shuffle(question.options) };
+}
+
+/**
  * Picks up to `count` questions at random from `pool` without repeats.
  * If the pool is smaller than `count`, the whole (shuffled) pool is returned
  * rather than repeating questions within a session.
  */
 export function selectRandomQuestions(pool: Question[], count: number): Question[] {
-  return shuffle(pool).slice(0, count);
+  return shuffle(pool)
+    .slice(0, count)
+    .map(withShuffledOptions);
 }
