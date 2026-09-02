@@ -1,5 +1,10 @@
+import { useState } from "react";
+import { CONJUGATIONS, findConjugatedVerbTag } from "../data/conjugations";
+import { labelForTag } from "../data/tagGroups";
 import type { Question } from "../types/question";
 import { Button } from "./Button";
+import { ConjugationTable } from "./ConjugationTable";
+import { Modal } from "./Modal";
 
 interface FeedbackProps {
   question: Question;
@@ -10,6 +15,9 @@ interface FeedbackProps {
 }
 
 export function Feedback({ question, userAnswer, correct, onNext, isLast }: FeedbackProps) {
+  const [showConjugations, setShowConjugations] = useState(false);
+  const verbTag = findConjugatedVerbTag(question.tags);
+
   return (
     <div className="mt-8 flex flex-col items-center gap-5">
       <div
@@ -37,9 +45,21 @@ export function Feedback({ question, userAnswer, correct, onNext, isLast }: Feed
         </div>
       )}
 
+      {verbTag && (
+        <Button variant="outline" size="sm" onClick={() => setShowConjugations(true)}>
+          {labelForTag(verbTag)} conjugations
+        </Button>
+      )}
+
       <Button variant="primary" size="lg" onClick={onNext} autoFocus>
         {isLast ? "See results →" : "Next →"}
       </Button>
+
+      {verbTag && (
+        <Modal open={showConjugations} onClose={() => setShowConjugations(false)} title={`${labelForTag(verbTag)} conjugations`}>
+          <ConjugationTable verb={CONJUGATIONS[verbTag]} />
+        </Modal>
+      )}
     </div>
   );
 }

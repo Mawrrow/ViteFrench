@@ -3,6 +3,8 @@ import { Layout } from "./components/Layout";
 import { Home } from "./pages/Home";
 import { Progress } from "./pages/Progress";
 import { Quiz } from "./pages/Quiz";
+import { Reference } from "./pages/Reference";
+import { ReferenceVerb } from "./pages/ReferenceVerb";
 import { Results } from "./pages/Results";
 
 /**
@@ -19,6 +21,8 @@ export const router = createBrowserRouter([
       { path: "/quiz", element: <Quiz /> },
       { path: "/results", element: <Results /> },
       { path: "/progress", element: <Progress /> },
+      { path: "/reference", element: <Reference /> },
+      { path: "/reference/:verbTag", element: <ReferenceVerb /> },
     ],
   },
 ]);

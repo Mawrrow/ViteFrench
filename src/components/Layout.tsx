@@ -8,8 +8,8 @@ export function Layout() {
   return (
     <div className="min-h-dvh bg-brand-cream">
       <nav className="border-b-4 border-brand-black bg-white">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-          <Link to="/" className="font-display text-lg tracking-tight uppercase hover:cursor-pointer">
+        <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-3 sm:py-4">
+          <Link to="/" className="font-display text-base tracking-tight uppercase hover:cursor-pointer sm:text-lg">
             ViteFrench
           </Link>
           <div className="flex gap-2">
@@ -18,6 +18,9 @@ export function Layout() {
             </NavTab>
             <NavTab to="/progress" active={pathname === "/progress"}>
               Progress
+            </NavTab>
+            <NavTab to="/reference" active={pathname.startsWith("/reference")}>
+              Reference
             </NavTab>
           </div>
         </div>
@@ -34,7 +37,7 @@ function NavTab({ to, active, children }: { to: string; active: boolean; childre
   return (
     <Link
       to={to}
-      className={`border-4 border-brand-black px-4 py-2 font-display text-sm uppercase shadow-brutal-sm transition-colors hover:cursor-pointer ${
+      className={`border-4 border-brand-black px-2.5 py-1.5 font-display text-xs uppercase shadow-brutal-sm transition-colors hover:cursor-pointer sm:px-4 sm:py-2 sm:text-sm ${
         active ? "bg-brand-blue text-white" : "bg-white"
       }`}
     >
