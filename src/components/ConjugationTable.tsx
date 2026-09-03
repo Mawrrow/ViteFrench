@@ -29,50 +29,67 @@ interface ConjugationTableProps {
 
 export function ConjugationTable({ verb }: ConjugationTableProps) {
   return (
-    <div className="overflow-x-auto border-4 border-brand-black shadow-brutal-sm">
-      <table className="w-full table-fixed border-collapse">
-        <colgroup>
-          <col className="w-14 sm:w-20" />
-          {verb.tenses.map((t) => (
-            <col key={t.tenseTag} />
-          ))}
-        </colgroup>
-        <thead>
-          <tr className="bg-brand-black">
-            <th className="px-2 py-3 sm:px-3">
-              <span className="sr-only">Pronoun</span>
-            </th>
+    <>
+      {/* Below sm: a grid this wide has no room to breathe, so stack one bordered
+          card per pronoun instead — normal vertical scrolling, nothing clipped
+          or requiring a sideways swipe. */}
+      <div className="flex flex-col gap-3 sm:hidden">
+        {PRONOUNS.map((pronoun) => (
+          <div key={pronoun} className="border-4 border-brand-black bg-white shadow-brutal-sm">
+            <div className="bg-brand-black px-3 py-2 font-display text-sm text-white uppercase">{pronoun}</div>
+            <dl>
+              {verb.tenses.map((t, i) => (
+                <div
+                  key={t.tenseTag}
+                  className={`flex items-center justify-between gap-3 px-3 py-2 ${i > 0 ? "border-t border-brand-black/15" : ""} ${
+                    i % 2 === 1 ? "bg-brand-cream/60" : "bg-white"
+                  }`}
+                >
+                  <dt className="font-display text-xs text-brand-black/60 uppercase">{TENSE_HEADER_LABELS[t.tenseTag] ?? t.tenseTag}</dt>
+                  <dd className="font-medium">{formatCell(pronoun, t.forms[pronoun])}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        ))}
+      </div>
+
+      <div className="hidden overflow-x-auto border-4 border-brand-black shadow-brutal-sm sm:block">
+        <table className="w-full table-fixed border-collapse">
+          <colgroup>
+            <col className="w-20" />
             {verb.tenses.map((t) => (
-              <th
-                key={t.tenseTag}
-                className="px-2 py-3 text-left font-display text-[10px] leading-tight text-white uppercase sm:px-3 sm:text-xs"
-              >
-                {TENSE_HEADER_LABELS[t.tenseTag] ?? t.tenseTag}
-              </th>
+              <col key={t.tenseTag} />
             ))}
-          </tr>
-        </thead>
-        <tbody>
-          {PRONOUNS.map((pronoun, i) => (
-            <tr key={pronoun} className={i % 2 === 1 ? "bg-brand-cream/60" : "bg-white"}>
-              <th
-                scope="row"
-                className="border-r-4 border-brand-black px-2 py-3 text-left font-display text-xs uppercase sm:px-3 sm:text-sm"
-              >
-                {pronoun}
+          </colgroup>
+          <thead>
+            <tr className="bg-brand-black">
+              <th className="px-3 py-3">
+                <span className="sr-only">Pronoun</span>
               </th>
               {verb.tenses.map((t) => (
-                <td
-                  key={t.tenseTag}
-                  className="border-t border-brand-black/15 px-2 py-3 text-sm font-medium wrap-break-word sm:px-3 sm:text-base"
-                >
-                  {formatCell(pronoun, t.forms[pronoun])}
-                </td>
+                <th key={t.tenseTag} className="px-3 py-3 text-left font-display text-xs leading-tight text-white uppercase">
+                  {TENSE_HEADER_LABELS[t.tenseTag] ?? t.tenseTag}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {PRONOUNS.map((pronoun, i) => (
+              <tr key={pronoun} className={i % 2 === 1 ? "bg-brand-cream/60" : "bg-white"}>
+                <th scope="row" className="border-r-4 border-brand-black px-3 py-3 text-left font-display text-sm uppercase">
+                  {pronoun}
+                </th>
+                {verb.tenses.map((t) => (
+                  <td key={t.tenseTag} className="border-t border-brand-black/15 px-3 py-3 text-base font-medium wrap-break-word">
+                    {formatCell(pronoun, t.forms[pronoun])}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
